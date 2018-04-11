@@ -105,3 +105,15 @@ void SemDescriptorPtrList_print(ListHead* l){
   }
   printf("]");
 }
+
+
+//funzione per cercare un semaforo tra quelli gia aperti (usata nella sem_open) se lo trova restituisce il descrittore del semaforo trovato
+SemDescriptor* check_id(ListHead* l,int k){
+    ListItem* scroll = l->first;
+    while(scroll){
+        SemDescriptor* desc =(SemDescriptor*)scroll;
+	    if(k == desc->semaphore->id) return desc;
+        scroll=scroll->next;
+    }
+    return NULL;
+}

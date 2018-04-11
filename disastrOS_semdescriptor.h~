@@ -30,5 +30,5 @@ SemDescriptorPtr* SemDescriptorPtr_alloc(SemDescriptor* descriptor);
 int SemDescriptorPtr_free(SemDescriptorPtr* d);
 void SemDescriptorPtrList_print(ListHead* l);
 
-//funzione per cercare un semaforo tra quelli gia aperti (usata nella sem_open)
+//funzione per cercare un semaforo tra quelli gia aperti
 SemDescriptor* check_id(ListHead* l,int key);
