@@ -15,13 +15,22 @@ void internal_semOpen(){
 
     int ultimo_sem_usato = running->last_sem_fd;
 
-    //creo il semaforo allocandolo con sem_num = n_semaforo
-    Semaphore* sem = Semaphore_alloc(n_semaforo, sem_val);
-    printf( "Alloco il semaforo con sem_num = %d\n", n_semaforo);
+    //controllo che il semaforo non sia gia esistente
+    ListHead sem_esistenti = sem_list;
+    Semaphore* sem = SemaphoreList_byId(&sem_esistenti,n_semaforo);
+
     if(!sem){
-        running->syscall_retvalue = DSOS_ECREATESEM;
-        return;
+        //creo il semaforo allocandolo con sem_num = n_semaforo
+        sem = Semaphore_alloc(n_semaforo, sem_val);
+        printf( "Alloco il semaforo con sem_num = %d\n", n_semaforo);
+        if(!sem){
+            running->syscall_retvalue = DSOS_ECREATESEM;
+            return;
+        }
     }
+
+    //inserisco il semaforo creato nella variabile globale contenete la lista dei semafori creati
+    List_insert(&sem_list, sem_list.last, (ListItem*) sem);
 
     //controllo se il semaforo che voglio creare non è gia aperto
     ListHead semafori_aperti = running->sem_descriptor;
@@ -50,4 +59,12 @@ void internal_semOpen(){
 
     desc_pcb->ptr = puntatore_sem;
 
+    //aggiungo il descrittore del semaforo appena aperto alla lista dei semafori nel PCB del processo che ha chiamato la funzione
+    List_insert(&running->sem_descriptors, running->sem_descriptors.last, (ListItem*) desc_pcb);
+
+    //aggiungo il semaforo appena aperto alla lista deisemafori
+    List_insert(&sem -> descriptors, sem-> descriptors.last, (ListItem*) puntatore_sem);
+
+    running->syscall_retvalue = desc_pcb->fd;
+    return;
 }
