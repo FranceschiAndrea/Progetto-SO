@@ -27,10 +27,9 @@ void internal_semOpen(){
             running->syscall_retvalue = DSOS_ECREATESEM;
             return;
         }
+        //inserisco il semaforo creato nella variabile globale contenete la lista dei semafori creati
+        List_insert(&sem_list, sem_list.last, (ListItem*) sem);
     }
-
-    //inserisco il semaforo creato nella variabile globale contenete la lista dei semafori creati
-    List_insert(&sem_list, sem_list.last, (ListItem*) sem);
 
     //controllo se il semaforo che voglio creare non è gia aperto
     ListHead semafori_aperti = running->sem_descriptor;
@@ -56,7 +55,6 @@ void internal_semOpen(){
         running->syscall_retvalue = DSOS_ECREATEPTR;
         return;
     }
-
     desc_pcb->ptr = puntatore_sem;
 
     //aggiungo il descrittore del semaforo appena aperto alla lista dei semafori nel PCB del processo che ha chiamato la funzione
