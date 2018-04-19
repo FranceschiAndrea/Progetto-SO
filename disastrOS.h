@@ -38,3 +38,6 @@ int disastrOS_destroyResource(int resource_id);
 
 // debug function, prints the state of the internal system
 void disastrOS_printStatus();
+
+//syscall semafori
+int disastrOS_semOpen(int n_semaforo,int sem_val);

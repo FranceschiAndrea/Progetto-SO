@@ -5,6 +5,8 @@
 #include "disastrOS_syscalls.h"
 #include "disastrOS_semaphore.h"
 #include "disastrOS_semdescriptor.h"
+#include "linked_list.h"
+#include "disastrOS_globals.h"
 
 void internal_semOpen(){
 
@@ -32,7 +34,7 @@ void internal_semOpen(){
     }
 
     //controllo se il semaforo che voglio creare non è gia aperto
-    ListHead semafori_aperti = running->sem_descriptor;
+    ListHead semafori_aperti = running->sem_descriptors;
     SemDescriptor* sem_aperto = check_id(&semafori_aperti, n_semaforo);
     if( sem_aperto ){
         running->syscall_retvalue = sem_aperto->fd;
