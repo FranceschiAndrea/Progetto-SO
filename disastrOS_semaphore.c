@@ -4,6 +4,8 @@
 #include "disastrOS_descriptor.h"
 #include "pool_allocator.h"
 #include "linked_list.h"
+#include "disastrOS_semdescriptor.h"
+
 
 #define SEMAPHORE_SIZE sizeof(Semaphore)
 #define SEMAPHORE_MEMSIZE (sizeof(Semaphore)+sizeof(int))
