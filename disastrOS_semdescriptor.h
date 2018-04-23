@@ -12,6 +12,7 @@ typedef struct SemDescriptor{
   Semaphore* semaphore;
   int fd;
   struct SemDescriptorPtr* ptr; // pointer to the entry in the resource list
+  struct SemDescriptorPtr* ptr_wait; // puntatore al descrittore del semaforo da usare nelle code di wait, se non lo posizonassimo qui dovremmo allocarlo e deallocarlo ad ogni wait e post
 } SemDescriptor;
 
 typedef struct SemDescriptorPtr{
