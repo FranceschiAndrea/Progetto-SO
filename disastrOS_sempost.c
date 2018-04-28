@@ -12,7 +12,7 @@ void internal_semPost(){
   //creo una lista di tutti i semafori attivi
   ListHead list_semafori=running->sem_descriptor;
 
-  SemDescriptor* sem_dsc = (SemDescriptor*)SemDescriptorList_byFd(&list_semafori, sem_d);
+  SemDescriptor* sem_dsc=(SemDescriptor*)SemDescriptorList_byFd(&list_semafori, sem_d);
 
   //controllo l' esistenza del semaforo
   if(!sem_dsc)
@@ -21,11 +21,11 @@ void internal_semPost(){
       return;
   }
 
-    Semaphore* sem = sem_dsc->semaphore;
+    Semaphore* sem=sem_dsc->semaphore;
 
     //controllo esistenza sem
     if (!sem){
-        running->syscall_retvalue = DSOS_ENOTOPENED;
+        running->syscall_retvalue=DSOS_ENOTOPENED;
         return;
     }
 
@@ -33,24 +33,24 @@ void internal_semPost(){
     while(sem->count<0){
 
         //devo prendere il processo in testa alla coda di attesa
-        SemDescriptorPtr* head_wait = (SemDescriptorPtr*) List_detach(&(sem->waiting_descriptor),(ListItem*)(sem->waiting_descriptors).first)
+        SemDescriptorPtr* head_wait=(SemDescriptorPtr*) List_detach(&(sem->waiting_descriptor),(ListItem*)(sem->waiting_descriptors).first)
 
         //pcb del processo
-        PCB* pcb = head_wait->descriptor->pcb;
+        PCB* pcb=head_wait->descriptor->pcb;
 
         //lrimozione dalla lista di attesa
         List_detach(&waiting_list, (ListItem*) pcb);
 
         //inserimento in  ready
-        List_insert(&ready_list, (ListItem*) ready_list.last, (ListItem*) pcbs);
-        pcb_head->status = Ready;
+        List_insert(&ready_list, (ListItem*) ready_list.last, (ListItem*) pcb);
+        pcb->status=Ready;
 
     }
 
        //aumento del semaforo
         (sem->count)++;
 
-        running -> syscall_retvalue = 0;
+        running->syscall_retvalue=0;
         return;
 
 
