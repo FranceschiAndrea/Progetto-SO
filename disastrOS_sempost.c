@@ -17,18 +17,41 @@ void internal_semPost(){
   //controllo l' esistenza del semaforo
   if(!sem_dsc)
   {
-
       running->syscall_retvalue=-1;
       return;
   }
 
     Semaphore* sem = sem_dsc->semaphore;
 
-    // iterazione sul contatore del semaforo per il controllo di processi in waiting
-    while(sem<count){
+    //controllo esistenza sem
+    if (!sem){
+        running->syscall_retvalue = DSOS_ENOTOPENED;
+        return;
+    }
 
+    // iterazione sul contatore del semaforo per il controllo di processi in waiting
+    while(sem->count<0){
+
+        //devo prendere il processo in testa alla coda di attesa
+        SemDescriptorPtr* head_wait = (SemDescriptorPtr*) List_detach(&(sem->waiting_descriptor),(ListItem*)(sem->waiting_descriptors).first)
+
+        //pcb del processo
+        PCB* pcb = head_wait->descriptor->pcb;
+
+        //lrimozione dalla lista di attesa
+        List_detach(&waiting_list, (ListItem*) pcb);
+
+        //inserimento in  ready
+        List_insert(&ready_list, (ListItem*) ready_list.last, (ListItem*) pcbs);
+        pcb_head->status = Ready;
 
     }
+
+       //aumento del semaforo
+        (sem->count)++;
+
+        running -> syscall_retvalue = 0;
+        return;
 
 
 }
