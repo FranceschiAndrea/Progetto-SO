@@ -192,7 +192,7 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   syscall_numarg[DSOS_CALL_SEMCLOSE]      = 1;
 
   syscall_vector[DSOS_CALL_SEMPOST]      = internal_semPost;
-  syscall_numarg[DSOS_CALL_SEMPOST]      = 2;
+  syscall_numarg[DSOS_CALL_SEMPOST]      = 1;//mi serve un paramtro per la semPost
 
   syscall_vector[DSOS_CALL_SEMWAIT]      = internal_semWait;
   syscall_numarg[DSOS_CALL_SEMWAIT]      = 1;
@@ -310,6 +310,10 @@ int disastrOS_destroyResource(int resource_id) {
 //aggiungo funzione per la gestione della open tramite syscall
 int disastrOS_semOpen(int n_semaforo,int sem_val){
       return disastrOS_syscall(DSOS_CALL_SEMOPEN, n_semaforo, sem_val);
+}
+
+int disastrOS_semPost(int fd){
+      return disastrOS_syscall(DSOS_CALL_SEMPOST, fd);
 }
 
 

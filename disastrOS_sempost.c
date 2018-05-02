@@ -17,7 +17,7 @@ void internal_semPost(){
   //controllo l' esistenza del semaforo
   if(!sem_dsc)
   {
-      running->syscall_retvalue=-1;
+      running->syscall_retvalue=DSOS_ESEMPOSTNOPENED;
       return;
   }
 
@@ -29,8 +29,8 @@ void internal_semPost(){
         return;
     }
 
-    // iterazione sul contatore del semaforo per il controllo di processi in waiting
-    while(sem->count<0){
+    // iterazione sul contatore del semaforo per il controllo di processi in waiting e controllo dell' esistenza del descrittore preso
+    while(sem->count<0 && sem->waiting_descriptors.first != NULL){
 
         //devo prendere il processo in testa alla coda di attesa
         SemDescriptorPtr* head_wait=(SemDescriptorPtr*) List_detach(&(sem->waiting_descriptor),(ListItem*)(sem->waiting_descriptors).first)
