@@ -312,6 +312,10 @@ int disastrOS_semOpen(int n_semaforo,int sem_val){
       return disastrOS_syscall(DSOS_CALL_SEMOPEN, n_semaforo, sem_val);
 }
 
+int disastrOS_semWait(int desc){
+      return disastrOS_syscall(DSOS_CALL_SEMWAIT, desc);
+}
+
 int disastrOS_semPost(int fd){
       return disastrOS_syscall(DSOS_CALL_SEMPOST, fd);
 }
