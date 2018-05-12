@@ -1,0 +1,27 @@
+#include <assert.h>
+#include <unistd.h>
+#include <stdio.h>
+#include "disastrOS.h"
+#include "disastrOS_syscalls.h"
+#include "disastrOS_semaphore.h"
+#include "disastrOS_semdescriptor.h"
+
+void internal_semClose(){
+  int fd= running->syscall_args[0];
+
+      SemDescriptor* semD= SemDescriptorList_byFd(&running->sem_descriptors, fd);
+      if(!semD)
+      {
+          running->syscall_retvalue=-1;
+      }
+
+      //prendo il semaforo del semD
+      Semaphore* sem= semD->semaphore;
+
+      //prendo i descrittori associati al semaforo
+      SemDescriptorPtr* semD_ptr = semD->ptr;
+      SemDescriptorPtr* semD_wait = semD->ptr_wait;
+
+      //andro ora a fare la varie free dei semD_...
+
+}
