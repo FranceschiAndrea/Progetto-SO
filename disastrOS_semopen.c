@@ -52,12 +52,22 @@ void internal_semOpen(){
     }
 
     //alloco il puntatore al semaforo
-    SemDescriptor* puntatore_sem = SemDescriptorPtr_alloc(desc_pcb);
+    SemDescriptorPtr* puntatore_sem = SemDescriptorPtr_alloc(desc_pcb);
     if(!puntatore_sem){
         running->syscall_retvalue = DSOS_ECREATEPTR;
         return;
     }
     desc_pcb->ptr = puntatore_sem;
+
+    //alloco e metto nella struttura del descrittore dei semafori un puntatore da usare nelle code di waiting per non allocarlo nelle sem_wait e deallocarlo nelle sem_post
+
+    SemDescriptorPtr * puntatore_wait = SemDescriptorPtr_alloc(desc_pcb);
+    if( !puntatore_wait ) {
+        running->syscall_retvalue = DSOS_ECREATEPTR;
+        return;
+    }
+    desc_pcb->ptr_wait = puntatore_wait;
+
 
     //aggiungo il descrittore del semaforo appena aperto alla lista dei semafori nel PCB del processo che ha chiamato la funzione
     List_insert(&running->sem_descriptors, running->sem_descriptors.last, (ListItem*) desc_pcb);
