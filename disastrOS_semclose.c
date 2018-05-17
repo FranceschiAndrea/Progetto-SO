@@ -44,7 +44,16 @@ void internal_semClose(){
             running->syscall_retvalue=r;
             return;
         }
-
+        //al semaforo non sono associati piu descrittori, posso fare la free
+        if((sem->descriptors).size==0)
+        {
+          sem = (Semaphore*) List_detach(&semaphores_list, (ListItem*) sem);
+          r=semaphore_free(sem)
+          if(r)
+          {
+            running->syscall_retvalue =r;
+            return;
+          }
+        }
         running->syscall_retvalue = 0;
-
 }
