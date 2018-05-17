@@ -30,20 +30,10 @@ void internal_semWait(){
         return;
     }
 
-    //se il puntatore per le code di wait non è stato gia allocato in una sem_wait precedente lo alloco
+    //prendo il puntatore per le code di wait che ho creato nella open dalla struttura
     SemDescriptorPtr * puntatore_wait = sem_desc->ptr_wait;
-    if(!puntatore_wait){
 
-        SemDescriptorPtr * puntatore_wait = SemDescriptorPtr_alloc(sem_desc);
-        if(!puntatore_wait) {
-            running->syscall_retvalue = DSOS_ECREATEPTR;
-            return;
-        }
-        sem_desc->ptr_wait = puntatore_wait;
-
-    }
-
-    //classica wait, se il count è < 0 il processo verra messo in waiting list e sblocchera un processo nella ready queue
+    //classica wait, se il count è <= 0 il processo verra messo in waiting list e sblocchera un processo nella ready queue
     if (semaforo -> count <= 0){
         List_insert(&(sem_desc->semaphore->waiting_descriptors), semaforo->waiting_descriptors.last, (ListItem*) puntatore_wait);
         running->status = Waiting;

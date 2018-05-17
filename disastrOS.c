@@ -27,7 +27,7 @@ ListHead timer_list;
 ListHead resources_list;
 
 // global list of semaphores
-ListHead semaphores_list;
+ListHead sem_list;
 
 SyscallFunctionType syscall_vector[DSOS_MAX_SYSCALLS];
 int syscall_numarg[DSOS_MAX_SYSCALLS];
@@ -203,7 +203,7 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   List_init(&waiting_list);
   List_init(&zombie_list);
   List_init(&resources_list);
-  List_init(&semaphores_list);
+  List_init(&sem_list);
   List_init(&timer_list);
 
 
@@ -332,7 +332,7 @@ void disastrOS_printStatus(){
   printf("\nResources: ");
   ResourceList_print(&resources_list);
   printf("\nSemaphores: ");
-  SemaphoreList_print(&semaphores_list);
+  SemaphoreList_print(&sem_list);
   printf("\nReady: ");
   PCBList_print(&ready_list);
   printf("\nWaiting: ");
