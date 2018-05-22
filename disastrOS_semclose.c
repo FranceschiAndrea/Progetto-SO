@@ -22,7 +22,7 @@ void internal_semClose(){
         SemDescriptorPtr* semD_ptr = semD->ptr;
 
 
-        semD_ptr=(SemDescriptorPtr*) List_detach(&(sem->descriptors),(ListItem*) semD_ptr);
+        semD_ptr=(SemDescriptor*) List_detach(&(sem->descriptors),(ListItem*) semD_ptr);
         int r=SemDescriptor_free(semD_ptr);
         if(r)
         {
@@ -31,7 +31,7 @@ void internal_semClose(){
         }
 
         SemDescriptorPtr* semD_wait = semD->ptr_wait;
-        r=SemDescriptorPtr_free(semD_wait)
+        r=SemDescriptorPtr_free(semD_wait);
         if(r){
             running->syscall_retvalue=r;
             return;
@@ -47,8 +47,8 @@ void internal_semClose(){
         //al semaforo non sono associati piu descrittori, posso fare la free
         if((sem->descriptors).size==0)
         {
-          sem = (Semaphore*) List_detach(&semaphores_list, (ListItem*) sem);
-          r=semaphore_free(sem)
+          sem = (Semaphore*) List_detach(&sem_list, (ListItem*) sem);
+          r=semaphore_free(sem);
           if(r)
           {
             running->syscall_retvalue =r;

@@ -43,3 +43,4 @@ void disastrOS_printStatus();
 int disastrOS_semOpen(int n_semaforo,int sem_val);
 int disastrOS_semWait(int desc);
 int disastrOS_semPost(int fd);
+int disastrOS_semClose(int fd);
