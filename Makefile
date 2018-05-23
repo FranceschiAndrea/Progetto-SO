@@ -1,5 +1,5 @@
 CC=gcc
-CCOPTS=--std=gnu99 -Wall 
+CCOPTS=--std=gnu99 -Wall
 AR=ar
 
 HEADERS=disastrOS.h\
@@ -15,9 +15,10 @@ HEADERS=disastrOS.h\
 	linked_list.h\
 	pool_allocator.h\
 
+
 OBJS=pool_allocator.o\
      linked_list.o\
-     disastrOS_timer.o\
+	 disastrOS_timer.o\
      disastrOS_pcb.o\
      disastrOS_resource.o\
      disastrOS_descriptor.o\
@@ -43,10 +44,11 @@ OBJS=pool_allocator.o\
 
 LIBS=libdisastrOS.a
 
-BINS=disastrOS_test
+BINS=disastrOS_test\
+	 disastrOS_test_prodcons
 
 #disastros_test
-
+#disastrOS_test_prodcons
 .phony: clean all
 
 
@@ -55,11 +57,14 @@ all:	$(LIBS) $(BINS)
 %.o:	%.c $(HEADERS)
 	$(CC) $(CCOPTS) -c -o $@  $<
 
-libdisastrOS.a: $(OBJS) $(HEADERS) 
+libdisastrOS.a: $(OBJS) $(HEADERS)
 	$(AR) -rcs $@ $^
 	$(RM) $(OBJS)
 
 disastrOS_test:		disastrOS_test.c $(LIBS)
+	$(CC) $(CCOPTS) -o $@ $^
+
+disastrOS_test_prodcons:		disastrOS_test_prodcons.c $(LIBS)
 	$(CC) $(CCOPTS) -o $@ $^
 
 clean:
