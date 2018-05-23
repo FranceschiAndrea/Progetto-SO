@@ -10,7 +10,7 @@ void internal_semPost(){
   int sem_d= running->syscall_args[0];
 
   //creo una lista di tutti i semafori attivi
-  ListHead list_semafori=running->sem_descriptor;
+  ListHead list_semafori=running->sem_descriptors;
 
   SemDescriptor* sem_dsc=(SemDescriptor*)SemDescriptorList_byFd(&list_semafori, sem_d);
 
@@ -33,7 +33,7 @@ void internal_semPost(){
     while(sem->count<0 && sem->waiting_descriptors.first != NULL){
 
         //devo prendere il processo in testa alla coda di attesa
-        SemDescriptorPtr* head_wait=(SemDescriptorPtr*) List_detach(&(sem->waiting_descriptor),(ListItem*)(sem->waiting_descriptors).first)
+        SemDescriptorPtr* head_wait=(SemDescriptorPtr*) List_detach(&(sem->waiting_descriptors),(ListItem*)(sem->waiting_descriptors).first);
 
         //pcb del processo
         PCB* pcb=head_wait->descriptor->pcb;

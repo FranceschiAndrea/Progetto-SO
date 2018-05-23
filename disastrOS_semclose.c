@@ -22,8 +22,8 @@ void internal_semClose(){
         SemDescriptorPtr* semD_ptr = semD->ptr;
 
 
-        semD_ptr=(SemDescriptor*) List_detach(&(sem->descriptors),(ListItem*) semD_ptr);
-        int r=SemDescriptor_free(semD_ptr);
+        semD_ptr=(SemDescriptorPtr*) List_detach(&(sem->descriptors),(ListItem*) semD_ptr);
+        int r=SemDescriptorPtr_free(semD_ptr);
         if(r)
         {
             running->syscall_retvalue=r;
@@ -48,8 +48,8 @@ void internal_semClose(){
         if((sem->descriptors).size==0)
         {
           sem = (Semaphore*) List_detach(&sem_list, (ListItem*) sem);
-          r=semaphore_free(sem);
-          if(r)
+          r=Semaphore_free(sem);
+          if(r!=0)
           {
             running->syscall_retvalue =r;
             return;
