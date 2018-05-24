@@ -38,15 +38,10 @@ void internal_semWait(){
         List_insert(&(sem_desc->semaphore->waiting_descriptors), semaforo->waiting_descriptors.last, (ListItem*) puntatore_wait);
         running->status = Waiting;
         List_insert(&waiting_list, waiting_list.last, (ListItem*) running);
-        if (ready_list.first)
-            running=(PCB*) List_detach(&ready_list, ready_list.first);
-        else {
-            printf ("Non c'è nessun processo da poter eseguire: DEADLOCK, riavvio....\n");
-            disastrOS_shutdown();
-            return;
-        }
+        running=(PCB*) List_detach(&ready_list, ready_list.first);
 
     }
+
     semaforo -> count-=1;
 
     running -> syscall_retvalue = 0;

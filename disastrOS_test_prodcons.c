@@ -65,7 +65,7 @@ void Prod(void* args){
 
 
     for(i = 0;i < ROUNDS;i++){
-        printf("\n\n+++++\n+++++\n+++++\nPid: %d\nsem_empty: %d\nsem_fill: %d\n+++++\n+++++\n+++++\n\n",running->pid, sem_e->count, sem_f->count);
+        printf("\n\n\nPid: %d\nsem_empty: %d\nsem_fill: %d\n",running->pid, sem_e->count, sem_f->count);
         ret = disastrOS_semWait(sem_empty);                             // se il buffer è pieno(sem_empty=0) devo aspettare che abbia almeno uno spazio per poter inserire il "token"
         ERROR_HELPER(ret != 0, "Error semWait sem_empty process ");
         ret = disastrOS_semWait(sem_mutex1);                            // devo aspettare che sia il mio turno tra tutti i produttori
@@ -118,7 +118,7 @@ void Cons(void* args){
 
 
     for(i = 0;i < ROUNDS;i++){
-        printf("\n\n+++++\n+++++\n+++++\nPid: %d\nsem_empty: %d\nsem_fill: %d\n+++++\n+++++\n+++++\n\n",running->pid, sem_e->count, sem_f->count);
+        printf("\n\n\nPid: %d\nsem_empty: %d\nsem_fill: %d\n",running->pid, sem_e->count, sem_f->count);
         ret = disastrOS_semWait(sem_fill);                                              // aspetto finchè sem_fill non contenga almeno un "token" prodotto
         ERROR_HELPER(ret != 0, "Error semWait sem_fill process");
 

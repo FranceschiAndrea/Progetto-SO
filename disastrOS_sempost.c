@@ -30,7 +30,7 @@ void internal_semPost(){
     }
 
     // iterazione sul contatore del semaforo per il controllo di processi in waiting e controllo dell' esistenza del descrittore preso
-    while(sem->count<0 && sem->waiting_descriptors.first != NULL){
+    if(sem->count<=0 && sem->waiting_descriptors.first != NULL){
 
         //devo prendere il processo in testa alla coda di attesa
         SemDescriptorPtr* head_wait=(SemDescriptorPtr*) List_detach(&(sem->waiting_descriptors),(ListItem*)(sem->waiting_descriptors).first);
